@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About DengueCheck - AI Dengue Risk Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #e94d3a;
+            --primary-light: #f5a39f;
+            --primary-dark: #c41e0b;
+            --secondary: #ff9900;
+            --accent: #ffd700;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #fafafa;
+            --bg-light: #f5f5f7;
+            --border: #e5e7eb;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: var(--white);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        /* ===== PROJECT DESCRIPTION ===== */
+        .project-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 60px;
+            margin-bottom: 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+
+        .project-description {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .description-block {
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(233, 77, 58, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .description-block h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .description-block p {
+            color: var(--text-light);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        /* ===== DEVELOPER CARD ===== */
+        .developer-section {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .developer-section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            color: var(--text);
+        }
+
+        .developer-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 60px 40px;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-out 0.4s forwards;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary);
+        }
+
+        .developer-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(233, 77, 58, 0.2);
+        }
+
+        .developer-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 10px 30px rgba(233, 77, 58, 0.3);
+        }
+
+        .developer-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .developer-role {
+            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .developer-info {
+            background: linear-gradient(135deg, rgba(233, 77, 58, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .info-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: var(--text);
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(233, 77, 58, 0.2);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(233, 77, 58, 0.3);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 14px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(233, 77, 58, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(233, 77, 58, 0.3);
+        }
+
+        /* ===== TECH STACK ===== */
+        .tech-stack {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 60px;
+            margin-bottom: 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, rgba(233, 77, 58, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(233, 77, 58, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(233, 77, 58, 0.15);
+        }
+
+        .tech-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .tech-name {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(180deg, #f8fafc 0%, #f5f7fb 100%);
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            margin-top: 80px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+
+            .project-description {
+                grid-template-columns: 1fr;
+            }
+
+            .project-section {
+                padding: 40px 25px;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .developer-card {
+                padding: 40px 25px;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand">
+                <span>🦟</span>
+                <span>DengueCheck</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/#tips">Prevention</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <!-- HERO SECTION -->
+        <div class="hero-section">
+            <h1>About DengueCheck</h1>
+            <p>An AI-powered dengue risk assessment system designed to provide early detection, personalized risk scores, and actionable health recommendations for Dhaka residents.</p>
+        </div>
+
+        <!-- PROJECT DESCRIPTION -->
+        <div class="project-section">
+            <div class="section-title">
+                <i class="fas fa-info-circle"></i>
+                Project Overview
+            </div>
+            <div class="project-description">
+                <div class="description-block">
+                    <h3><i class="fas fa-target"></i> Mission</h3>
+                    <p>DengueCheck aims to democratize dengue risk assessment through accessible AI technology. By combining machine learning with epidemiological data, we empower individuals and healthcare providers with early detection capabilities and data-driven insights.</p>
+                    <p style="margin-top: 15px; color: var(--primary); font-weight: 700;">Saving lives through early awareness and prevention.</p>
+                </div>
+                <div class="description-block">
+                    <h3><i class="fas fa-lightbulb"></i> How It Works</h3>
+                    <ul class="features-list">
+                        <li>Analyzes demographic and geographic factors</li>
+                        <li>Uses advanced ML models (XGBoost + Logistic Regression)</li>
+                        <li>Provides personalized risk probability scores</li>
+                        <li>Identifies top risk factors for your profile</li>
+                        <li>Offers prevention guidance and recommendations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- TECH STACK -->
+        <div class="tech-stack">
+            <div class="section-title">
+                <i class="fas fa-cogs"></i>
+                Technology Stack
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-icon">🐍</div>
+                    <div class="tech-name">Python</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">⚡</div>
+                    <div class="tech-name">Flask</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🤖</div>
+                    <div class="tech-name">XGBoost</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📊</div>
+                    <div class="tech-name">Scikit-Learn</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🎨</div>
+                    <div class="tech-name">HTML/CSS</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📈</div>
+                    <div class="tech-name">Pandas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KEY FEATURES -->
+        <div class="project-section">
+            <div class="section-title">
+                <i class="fas fa-star"></i>
+                Key Features
+            </div>
+            <div class="project-description">
+                <div class="description-block">
+                    <h3><i class="fas fa-brain"></i> AI-Powered Prediction</h3>
+                    <p>Utilizes machine learning models (XGBoost & Logistic Regression) trained on real dengue data from Dhaka region to provide accurate risk assessments.</p>
+                </div>
+                <div class="description-block">
+                    <h3><i class="fas fa-map-location-dot"></i> Geographic Analysis</h3>
+                    <p>Identifies dengue hotspots and assesses area-specific risk factors to provide location-aware health recommendations.</p>
+                </div>
+                <div class="description-block">
+                    <h3><i class="fas fa-shield-virus"></i> Risk Stratification</h3>
+                    <p>Categorizes users into risk levels (Low, Moderate, High, Very High) with personalized prevention guidance for each level.</p>
+                </div>
+                <div class="description-block">
+                    <h3><i class="fas fa-chart-line"></i> Factor Analysis</h3>
+                    <p>Explains which demographic and environmental factors most influence dengue risk, helping users understand their susceptibility.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GOALS & IMPACT -->
+        <div class="tech-stack">
+            <div class="section-title">
+                <i class="fas fa-bullseye"></i>
+                Project Goals & Impact
+            </div>
+            <div class="project-description">
+                <div class="description-block">
+                    <h3><i class="fas fa-check-circle"></i> Goal 1: Early Detection</h3>
+                    <p>Provide individuals with early dengue risk assessment capabilities to enable timely medical consultation and laboratory testing.</p>
+                    <ul class="features-list">
+                        <li>Binary classification (Dengue positive/negative)</li>
+                        <li>Probability scoring (0-100%)</li>
+                        <li>Risk stratification levels</li>
+                        <li>Actionable recommendations</li>
+                    </ul>
+                </div>
+                <div class="description-block">
+                    <h3><i class="fas fa-lightbulb"></i> Goal 2: Risk Understanding</h3>
+                    <p>Identify and explain key dengue risk factors to support public health initiatives and awareness campaigns.</p>
+                    <ul class="features-list">
+                        <li>Feature importance ranking</li>
+                        <li>Geographic hotspot identification</li>
+                        <li>Demographic risk patterns</li>
+                        <li>Healthcare provider insights</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ML MODELS SECTION -->
+        <div class="project-section">
+            <div class="section-title">
+                <i class="fas fa-robot"></i>
+                ML Models & Algorithms
+            </div>
+            <p style="color: var(--text-light); margin-bottom: 30px; font-size: 1rem;">DengueCheck employs an ensemble of machine learning models and preprocessing techniques for accurate dengue risk prediction.</p>
+            
+            <div style="margin-top: 30px;">
+                <!-- Primary Models -->
+                <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; color: var(--text); display: flex; align-items: center; gap: 10px;">
+                    <span style="color: var(--primary);">⭐</span> Primary Models
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px;">
+                    <div style="background: linear-gradient(135deg, rgba(233, 77, 58, 0.1) 0%, rgba(255, 153, 0, 0.1) 100%); padding: 25px; border-radius: 12px; border-left: 4px solid var(--primary);">
+                        <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 12px;">
+                            <i class="fas fa-brain" style="color: var(--primary); margin-right: 8px;"></i> XGBoost Classifier
+                        </h4>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 12px;"><strong>Purpose:</strong> Main dengue risk prediction model using gradient boosting</p>
+                        <ul style="list-style: none; margin: 0;">
+                            <li style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 6px;"><span style="color: var(--success); font-weight: 700;">✓</span> Complex pattern capture</li>
+                            <li style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 6px;"><span style="color: var(--success); font-weight: 700;">✓</span> Top-15 feature ranking</li>
+                            <li style="color: var(--text-light); font-size: 0.9rem;"><span style="color: var(--success); font-weight: 700;">✓</span> Production model</li>
+                        </ul>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(100, 116, 139, 0.1) 100%); padding: 25px; border-radius: 12px; border-left: 4px solid var(--success);">
+                        <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 12px;">
+                            <i class="fas fa-chart-line" style="color: var(--success); margin-right: 8px;"></i> Logistic Regression
+                        </h4>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 12px;"><strong>Purpose:</strong> Ensemble backup model with interpretable probabilities</p>
+                        <ul style="list-style: none; margin: 0;">
+                            <li style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 6px;"><span style="color: var(--success); font-weight: 700;">✓</span> Elastic-Net regularization</li>
+                            <li style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 6px;"><span style="color: var(--success); font-weight: 700;">✓</span> Fast inference</li>
+                            <li style="color: var(--text-light); font-size: 0.9rem;"><span style="color: var(--success); font-weight: 700;">✓</span> Backup ensemble model</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Preprocessing Models -->
+                <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; color: var(--text); display: flex; align-items: center; gap: 10px;">
+                    <span style="color: var(--primary);">⚙️</span> Preprocessing & Feature Engineering
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 40px;">
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; border-top: 3px solid var(--primary);">
+                        <h5 style="font-weight: 700; color: var(--text); margin-bottom: 8px;"><i class="fas fa-dice" style="color: var(--primary); margin-right: 8px;"></i> OneHotEncoder</h5>
+                        <p style="color: var(--text-light); font-size: 0.85rem;">Converts categorical features (Area, Gender) to numeric binary vectors</p>
+                    </div>
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; border-top: 3px solid var(--primary);">
+                        <h5 style="font-weight: 700; color: var(--text); margin-bottom: 8px;"><i class="fas fa-ruler" style="color: var(--primary); margin-right: 8px;"></i> StandardScaler</h5>
+                        <p style="color: var(--text-light); font-size: 0.85rem;">Normalizes numeric features to zero mean and unit variance</p>
+                    </div>
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; border-top: 3px solid var(--primary);">
+                        <h5 style="font-weight: 700; color: var(--text); margin-bottom: 8px;"><i class="fas fa-cubes" style="color: var(--primary); margin-right: 8px;"></i> KBinsDiscretizer</h5>
+                        <p style="color: var(--text-light); font-size: 0.85rem;">Creates age groups using quantile-based binning (6 bins)</p>
+                    </div>
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; border-top: 3px solid var(--primary);">
+                        <h5 style="font-weight: 700; color: var(--text); margin-bottom: 8px;"><i class="fas fa-puzzle-piece" style="color: var(--primary); margin-right: 8px;"></i> SimpleImputer</h5>
+                        <p style="color: var(--text-light); font-size: 0.85rem;">Handles missing values with statistical imputation methods</p>
+                    </div>
+                </div>
+
+                <!-- Validation & Explainability -->
+                <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; color: var(--text); display: flex; align-items: center; gap: 10px;">
+                    <span style="color: var(--primary);">✔️</span> Validation & Explainability
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="background: linear-gradient(135deg, rgba(233, 77, 58, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); padding: 25px; border-radius: 12px; border-left: 4px solid var(--primary);">
+                        <h5 style="font-weight: 700; color: var(--text); margin-bottom: 12px;"><i class="fas fa-code-branch" style="color: var(--primary); margin-right: 8px;"></i> StratifiedKFold</h5>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">5-fold cross-validation maintaining class distribution for robust evaluation</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(233, 77, 58, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); padding: 25px; border-radius: 12px; border-left: 4px solid var(--primary);">
+                        <h5 style="font-weight: 700; color: var(--text); margin-bottom: 12px;"><i class="fas fa-chart-bar" style="color: var(--primary); margin-right: 8px;"></i> Metrics</h5>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Accuracy, Precision, Recall, F1-Score, ROC-AUC for comprehensive evaluation</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(233, 77, 58, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); padding: 25px; border-radius: 12px; border-left: 4px solid var(--primary);">
+                        <h5 style="font-weight: 700; color: var(--text); margin-bottom: 12px;"><i class="fas fa-lightbulb" style="color: var(--primary); margin-right: 8px;"></i> SHAP</h5>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">SHapley Additive exPlanations for feature importance and prediction interpretation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEVELOPER SECTION -->
+        <div class="developer-section">
+            <h2 class="developer-section-title">Developer</h2>
+            <div class="developer-card">
+                <div class="developer-avatar">
+                    👨‍💻
+                </div>
+                <div class="developer-name">Shahin</div>
+                <div class="developer-role">Computer Science Engineer</div>
+
+                <div class="developer-info">
+                    <div class="info-row">
+                        <div class="info-icon"><i class="fas fa-university"></i></div>
+                        <div class="info-content">
+                            <div class="info-label">University</div>
+                            <div class="info-value">Daffodil International University</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="info-content">
+                            <div class="info-label">Batch</div>
+                            <div class="info-value">Batch 61</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-icon"><i class="fas fa-id-card"></i></div>
+                        <div class="info-content">
+                            <div class="info-label">Student ID</div>
+                            <div class="info-value">221-15-5646</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://github.com/shahin5646" target="_blank" class="social-link" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/shahin-5646-diu/" target="_blank" class="social-link" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="mailto:shahinok1912@gmail.com" class="social-link" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+
+                <a href="/" class="cta-button">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 DengueCheck. All rights reserved. | Built with ❤️ for Dhaka Community</p>
+    </footer>
+
+    <script>
+        // Smooth scroll animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.project-section, .tech-stack, .developer-card');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'slideUp 0.8s ease-out forwards';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>

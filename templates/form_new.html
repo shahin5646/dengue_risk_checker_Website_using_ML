@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dengue Risk Assessment - AI-Powered Health Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #dc2626;
+            --primary-dark: #991b1b;
+            --primary-light: #fee2e2;
+            --secondary: #6366f1;
+            --success: #16a34a;
+            --warning: #d97706;
+            --dark: #0f172a;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-lighter: #f1f5f9;
+            --border: #e2e8f0;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            background: var(--white);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, #7c2d12 100%);
+            color: var(--white);
+            padding: 100px 20px 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: floatSlow 20s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+            animation: floatSlow 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(30px) scale(1.05); }
+        }
+
+        @keyframes flyAcross {
+            0% { transform: translateX(-50px) translateY(-20px) rotate(-15deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(calc(100vw + 50px)) translateY(20px) rotate(15deg); opacity: 0; }
+        }
+
+        .mosquito-fly {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0;
+        }
+
+        .mosquito-fly:nth-child(1) {
+            animation: flyAcross 6s linear infinite;
+            animation-delay: 0s;
+            top: 20%;
+        }
+
+        .mosquito-fly:nth-child(2) {
+            animation: flyAcross 7s linear infinite;
+            animation-delay: 2s;
+            top: 40%;
+        }
+
+        .mosquito-fly:nth-child(3) {
+            animation: flyAcross 8s linear infinite;
+            animation-delay: 4s;
+            top: 60%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: heroContentFade 0.8s ease-out;
+        }
+
+        @keyframes heroContentFade {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--primary);
+            padding: 16px 36px;
+            border-radius: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.05rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: 16px 36px;
+            border: 2px solid var(--white);
+            border-radius: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 1.05rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        /* ===== INFO SECTION ===== */
+        .info-section {
+            padding: 100px 20px;
+            background: var(--bg-light);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--text);
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background: var(--white);
+            border-radius: 1.2rem;
+            padding: 32px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardReveal 0.6s ease-out forwards;
+            opacity: 0;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-out;
+        }
+
+        .info-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-card:nth-child(1) { animation-delay: 0.1s; }
+        .info-card:nth-child(2) { animation-delay: 0.15s; }
+        .info-card:nth-child(3) { animation-delay: 0.2s; }
+        .info-card:nth-child(4) { animation-delay: 0.25s; }
+        .info-card:nth-child(5) { animation-delay: 0.3s; }
+        .info-card:nth-child(6) { animation-delay: 0.35s; }
+        .info-card:nth-child(7) { animation-delay: 0.4s; }
+        .info-card:nth-child(8) { animation-delay: 0.45s; }
+        .info-card:nth-child(9) { animation-delay: 0.5s; }
+        .info-card:nth-child(10) { animation-delay: 0.55s; }
+
+        .info-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 18px;
+            display: inline-block;
+            animation: iconBounce 0.6s ease-out;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .card-text {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* ===== FORM SECTION ===== */
+        .form-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #f8f7ff 100%);
+            position: relative;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(220, 38, 38, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .form-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .form-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .form-description {
+            font-size: 1.05rem;
+            color: var(--text-light);
+        }
+
+        .form-card {
+            background: var(--white);
+            border-radius: 1.5rem;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+            padding: 45px 35px;
+            animation: formSlideUp 0.7s ease-out;
+        }
+
+        @keyframes formSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-info-box {
+            background: linear-gradient(135deg, #fef08a 0%, #fcd34d 100%);
+            border-left: 4px solid var(--warning);
+            padding: 20px;
+            border-radius: 1rem;
+            margin-bottom: 32px;
+            color: #78350f;
+            font-weight: 600;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 26px;
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+        .form-group:nth-child(5) { animation-delay: 0.3s; }
+
+        .form-label {
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .required-star {
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 0.8rem;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+            outline: none;
+        }
+
+        .form-helper {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            border-radius: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 12px;
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.25);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.35);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: #cbd5e1;
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 60px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .footer strong {
+            color: var(--white);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-description {
+                font-size: 1.05rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .form-title {
+                font-size: 1.6rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .mosquito-fly {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <a href="/" class="brand">🏥 DengueCheck</a>
+            <ul class="nav-links">
+                <li><a href="#info-section">Learn</a></li>
+                <li><a href="#prediction-form">Assess Risk</a></li>
+                <li><a href="#footer">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero">
+        <span class="mosquito-fly">🦟</span>
+        <span class="mosquito-fly">🛡️</span>
+        <span class="mosquito-fly">🦟</span>
+
+        <div class="hero-content">
+            <div class="hero-badge">🏥 AI-Powered Health Assessment</div>
+            <h1 class="hero-title">Check Your Probability of Dengue</h1>
+            <p class="hero-description">
+                Take personalized steps to reduce your risk and recover well with expert guidance. Get an AI-powered dengue risk assessment based on epidemiological data from Dhaka, Bangladesh.
+            </p>
+
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="document.getElementById('prediction-form').scrollIntoView({behavior: 'smooth'});">
+                    Assess My Dengue Risk
+                </button>
+                <button class="btn-secondary" onclick="document.getElementById('info-section').scrollIntoView({behavior: 'smooth'});">
+                    Learn Prevention Tips
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== INFO SECTION ===== -->
+    <section class="info-section" id="info-section">
+        <div class="section-header">
+            <h2 class="section-title">Dengue Prevention & Recovery Tips</h2>
+            <p class="section-subtitle">
+                Follow these expert-backed guidelines to reduce your dengue risk and support a smooth recovery process.
+            </p>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Prevention Tips -->
+            <div class="info-card">
+                <div class="card-icon">🦟</div>
+                <div class="card-title">Use Mosquito Repellents</div>
+                <div class="card-text">Apply repellents with DEET, picaridin, or IR3535 on exposed skin and clothing, especially during early morning and late afternoon when mosquitoes are most active.</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">👕</div>
+                <div class="card-title">Wear Protective Clothing</div>
+                <div class="card-text">Light-colored, long-sleeved shirts and pants reduce mosquito bites. Mosquitoes are attracted to dark colors and exposed skin.</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">💧</div>
+                <div class="card-title">Eliminate Standing Water</div>
+                <div class="card-text">Regularly empty containers, flower pots, buckets, and vases. Mosquitoes breed in water as little as a few milliliters—check all potential sources weekly.</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">🛏️</div>
+                <div class="card-title">Sleep Under Mosquito Nets</div>
+                <div class="card-text">Use mosquito nets if there's no air conditioning or screened windows. Especially important in high-risk areas like Jatrabari, Tejgaon, and Bangshal.</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">🪟</div>
+                <div class="card-title">Secure Your Home</div>
+                <div class="card-text">Install screens on windows and doors, keep doors closed, and repair any holes. This is one of the most effective prevention measures.</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">🤒</div>
+                <div class="card-title">Treat Fever Promptly</div>
+                <div class="card-text">Seek immediate medical attention if you experience high fever, severe muscle pain, vomiting, or rash. Early detection reduces complications.</div>
+            </div>
+
+            <!-- Recovery Tips -->
+            <div class="info-card">
+                <div class="card-icon">💦</div>
+                <div class="card-title">Stay Hydrated</div>
+                <div class="card-text">Drink plenty of water, oral rehydration solutions, coconut water, and fresh fruit juices to restore fluids and electrolytes lost during illness.</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">🥗</div>
+                <div class="card-title">Eat a Balanced Diet</div>
+                <div class="card-text">Prioritize vitamin C (citrus, papaya), iron, potassium, and protein-rich foods (eggs, lean meats, leafy greens) to rebuild blood cells and platelets.</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">🚶</div>
+                <div class="card-title">Gradual Physical Activity</div>
+                <div class="card-text">Avoid strenuous exercise for the first few weeks. Begin with short walks or gentle stretching, and listen to your body's signals.</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-icon">🤝</div>
+                <div class="card-title">Community Action</div>
+                <div class="card-text">Join local awareness campaigns, participate in neighborhood clean-ups, and report mosquito breeding sites to health authorities.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FORM SECTION ===== -->
+    <section class="form-section" id="prediction-form">
+        <div class="form-wrapper">
+            <div class="form-header">
+                <h2 class="form-title">Get Your Personalized Risk Assessment</h2>
+                <p class="form-description">Enter your details below to check your dengue risk probability</p>
+            </div>
+
+            {% if error %}
+            <div style="background: #fee2e2; color: #dc2626; padding: 16px; border-radius: 0.8rem; margin-bottom: 24px; border-left: 4px solid #dc2626; font-weight: 600;">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="form-card">
+                <!-- Info Box -->
+                <div class="alert-info-box">
+                    <strong>📍 Geographic Location Matters Most</strong><br>
+                    Your area/neighborhood is the #1 predictor of dengue risk. High-risk zones: Jatrabari, Tejgaon, Mohammadpur, Bangshal.
+                </div>
+
+                <!-- Form -->
+                <form method="post" id="dengueForm" novalidate>
+                    <!-- Age -->
+                    <div class="form-group">
+                        <label for="age" class="form-label">
+                            Age <span class="required-star">*</span>
+                        </label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="age" 
+                            name="age" 
+                            placeholder="Enter your age (1-120)"
+                            min="1" 
+                            max="120" 
+                            required>
+                        <small class="form-helper">Your age in years (1-120)</small>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="form-group">
+                        <label for="gender" class="form-label">
+                            Gender <span class="required-star">*</span>
+                        </label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="" disabled selected>Select your gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <small class="form-helper">Choose your gender</small>
+                    </div>
+
+                    <!-- Area Type -->
+                    <div class="form-group">
+                        <label for="area_type" class="form-label">
+                            Area Type <span class="required-star">*</span>
+                        </label>
+                        <select class="form-select" id="area_type" name="area_type" required>
+                            <option value="" disabled selected>Select your area type</option>
+                            <option value="Developed">Developed (Urban)</option>
+                            <option value="Undeveloped">Undeveloped (Rural/Semi-urban)</option>
+                        </select>
+                        <small class="form-helper">Is your area developed or undeveloped?</small>
+                    </div>
+
+                    <!-- House Type -->
+                    <div class="form-group">
+                        <label for="house_type" class="form-label">
+                            House Type <span class="required-star">*</span>
+                        </label>
+                        <select class="form-select" id="house_type" name="house_type" required>
+                            <option value="" disabled selected>Select your house type</option>
+                            <option value="Building">Building (Concrete/Brick)</option>
+                            <option value="Tin-Shed">Tin-Shed</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <small class="form-helper">What type of building do you live in?</small>
+                    </div>
+
+                    <!-- Area (KEY PREDICTOR) -->
+                    <div class="form-group">
+                        <label for="area" class="form-label">
+                            Area Name <span class="required-star">*</span>
+                            <span style="background: var(--primary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 700;">KEY</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="area" 
+                            name="area" 
+                            placeholder="e.g., Jatrabari, Tejgaon, Mirpur..."
+                            list="area-list"
+                            autocomplete="off"
+                            required>
+                        <datalist id="area-list">
+                            <option value="Mirpur">
+                            <option value="Chawkbazar">
+                            <option value="Paltan">
+                            <option value="Motijheel">
+                            <option value="Gendaria">
+                            <option value="Dhanmondi">
+                            <option value="New Market">
+                            <option value="Sher-e-Bangla Nagar">
+                            <option value="Kafrul">
+                            <option value="Pallabi">
+                            <option value="Mohammadpur">
+                            <option value="Shahbagh">
+                            <option value="Shyampur">
+                            <option value="Kalabagan">
+                            <option value="Bosila">
+                            <option value="Jatrabari">
+                            <option value="Adabor">
+                            <option value="Kamrangirchar">
+                            <option value="Biman Bandar">
+                            <option value="Ramna">
+                            <option value="Badda">
+                            <option value="Bangshal">
+                            <option value="Sabujbagh">
+                            <option value="Hazaribagh">
+                            <option value="Sutrapur">
+                            <option value="Lalbagh">
+                            <option value="Demra">
+                            <option value="Banasree">
+                            <option value="Cantonment">
+                            <option value="Keraniganj">
+                            <option value="Tejgaon">
+                            <option value="Khilkhet">
+                            <option value="Kadamtali">
+                            <option value="Gulshan">
+                            <option value="Rampura">
+                            <option value="Khilgaon">
+                        </datalist>
+                        <small class="form-helper">📍 Type to see suggestions | High-risk: Jatrabari, Tejgaon, Mohammadpur, Bangshal</small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-submit">
+                        🔍 Get Risk Assessment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" id="footer">
+        <p>
+            <strong>⚠️ Important Disclaimer:</strong><br>
+            This tool is for educational and informational purposes only. It provides a risk probability estimate based on epidemiological models and cannot replace professional medical diagnosis. Always consult your healthcare provider for medical concerns, diagnosis, and treatment decisions. Do not rely solely on this tool for health decisions.
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form Validation
+        const form = document.getElementById('dengueForm');
+        form.addEventListener('submit', function(e) {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        });
+
+        // Scroll animation observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.animation = 'cardReveal 0.6s ease-out';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.info-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

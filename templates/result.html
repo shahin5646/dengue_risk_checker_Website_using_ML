@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DengueCheck - Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #e94d3a;
+            --primary-light: #f5a39f;
+            --primary-dark: #c41e0b;
+            --secondary: #ff9900;
+            --accent: #ffd700;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --high-risk: #FF5A5A;
+            --medium-risk: #F59E0B;
+            --low-risk: #10B981;
+            --dark: #0f172a;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #fafafa;
+            --bg-light: #f5f5f7;
+            --border: #e5e7eb;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at top right, #fef7f5 0%, #f8fbff 35%, #edf3ff 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* LEFT VERTICAL ACCENT LINE */
+        body::before {
+            content: '';
+            position: fixed;
+            left: 32px;
+            top: 0;
+            width: 2px;
+            height: 75vh;
+            background: linear-gradient(180deg, #FEECEC 0%, #FEECEC 50%, rgba(254, 236, 236, 0) 100%);
+            box-shadow: 0 0 20px rgba(254, 100, 100, 0.4);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* SUBTLE BACKGROUND TEXTURE */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 200, 200, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(233, 77, 58, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== TOP HEADER ===== */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+            padding: 16px 0;
+            margin-bottom: 40px;
+            z-index: 100;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-bar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo {
+            font-size: 1.8rem;
+        }
+
+        .header-text h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+
+        .header-text p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-links a {
+            font-size: 0.85rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 0.6s ease-out;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(229, 231, 235, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header-icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            animation: slideDown 0.7s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-light);
+        }
+
+        /* ===== MAIN GRID LAYOUT ===== */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        /* SECTION DIVIDERS */
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(233, 77, 58, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 1rem;
+            background: linear-gradient(180deg, var(--primary), var(--primary-light));
+            border-radius: 2px;
+        }
+
+        .section-divider {
+            margin: 50px 0 40px;
+            padding: 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(229, 231, 235, 0.4) 10%, rgba(229, 231, 235, 0.4) 90%, transparent);
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardFadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes cardFadeUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.98);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-1 { animation-delay: 0.1s; }
+        .card-2 { animation-delay: 0.15s; }
+        .card-3 { animation-delay: 0.2s; }
+        .card-4 { animation-delay: 0.25s; }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        /* ===== SCORE VISUALIZATION ===== */
+        .score-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+            border: 1px solid #FFD4D4;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .gauge-container {
+            flex: 0 0 200px;
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .gauge {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gauge-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(to right, #e5e7eb 0deg, #e5e7eb 360deg);
+        }
+
+        .gauge-fill {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: conic-gradient(to right, #FF5A5A var(--percentage), #e5e7eb var(--percentage));
+            animation: gaugeRotate 2s ease-out forwards;
+        }
+
+        @keyframes gaugeRotate {
+            from { transform: translate(-50%, -50%) rotateZ(-180deg); }
+            to { transform: translate(-50%, -50%) rotateZ(calc(var(--percentage) * 1.8deg - 180deg)); }
+        }
+
+        .gauge-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 0 8px 20px rgba(255, 90, 90, 0.15);
+        }
+
+        .percentage-text {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: #FF5A5A;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .risk-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-top: 8px;
+            animation: fadeIn 2.2s ease-out;
+        }
+
+        .score-info {
+            flex: 1;
+        }
+
+        .score-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .score-header-icon {
+            font-size: 2.2rem;
+        }
+
+        .score-header-text h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .score-header-text p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .score-details {
+            margin-bottom: 24px;
+        }
+
+        .score-detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 90, 90, 0.1);
+        }
+
+        .score-detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .score-detail-label {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .score-detail-value {
+            font-weight: 700;
+            color: #FF5A5A;
+        }
+
+        .recommendation-box {
+            background: rgba(255, 90, 90, 0.05);
+            border-left: 4px solid #FF5A5A;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .recommendation-title {
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .recommendation-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .recommendation-list li {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            padding: 4px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .recommendation-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #FF5A5A;
+            font-weight: 800;
+        }
+
+        /* ===== PERSONAL INFO CARD ===== */
+        .info-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-icon {
+            font-size: 1.3rem;
+        }
+
+        /* ===== GEOGRAPHIC RISK CARD ===== */
+        .geographic-card {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDF3C7 100%);
+            border: 1px solid #FECF72;
+            border-left: 4px solid #F59E0B;
+        }
+
+        .geographic-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .geographic-header-icon {
+            font-size: 1.8rem;
+        }
+
+        .geographic-content {
+            display: grid;
+            gap: 12px;
+        }
+
+        .geographic-item {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .geographic-item strong {
+            color: #92400E;
+        }
+
+        /* ===== RISK FACTORS TABLE ===== */
+        .risk-factors-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .risk-factors-table thead {
+            background: var(--bg-light);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .risk-factors-table th {
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+        }
+
+        .risk-factors-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s ease;
+        }
+
+        .risk-factors-table tbody tr:hover {
+            background: var(--bg-light);
+        }
+
+        .risk-factors-table tbody tr:nth-child(odd) {
+            background: rgba(0, 0, 0, 0.01);
+        }
+
+        .risk-factors-table td {
+            padding: 16px 14px;
+            font-size: 0.95rem;
+        }
+
+        .factor-name {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .factor-icon {
+            font-size: 1.1rem;
+            margin-right: 8px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF5A5A, #FF7A7A);
+            border-radius: 10px;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .factor-percentage {
+            font-weight: 700;
+            color: #FF5A5A;
+            font-size: 0.9rem;
+        }
+
+        /* ===== ACTION BUTTONS - 2025 MODERN DESIGN ===== */
+        .action-buttons-modern {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 48px;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.7s ease-out 0.4s forwards;
+            opacity: 0;
+            flex-wrap: wrap;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-modern {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Manrope', sans-serif;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glow effect pseudo-element */
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .btn-modern > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-icon {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .btn-text {
+            transition: letter-spacing 0.3s ease;
+        }
+
+        /* ANIMATION DELAYS */
+        .btn-modern-1 { animation: buttonSlideIn 0.6s ease-out 0.2s forwards; opacity: 0; }
+        .btn-modern-2 { animation: buttonSlideIn 0.6s ease-out 0.25s forwards; opacity: 0; }
+
+        @keyframes buttonSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* PRIMARY BUTTON - Vibrant Coral-Red Gradient */
+        .btn-modern-primary {
+            background: linear-gradient(135deg, #FF5A5A 0%, #FF7A7A 50%, #e94d3a 100%);
+            color: var(--white);
+            box-shadow: 0 12px 32px rgba(255, 90, 90, 0.25);
+        }
+
+        .btn-modern-primary::before {
+            background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.4), transparent 60%);
+        }
+
+        .btn-modern-primary:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 16px 48px rgba(255, 90, 90, 0.35);
+        }
+
+        .btn-modern-primary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-modern-primary:hover .btn-icon {
+            transform: rotate(180deg);
+        }
+
+        /* SECONDARY BUTTON - Frosted Glass Effect */
+        .btn-modern-secondary {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            color: #FF5A5A;
+            border: 1.5px solid rgba(255, 90, 90, 0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .btn-modern-secondary::before {
+            background: linear-gradient(135deg, rgba(255, 90, 90, 0.08), transparent);
+        }
+
+        .btn-modern-secondary:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(255, 90, 90, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(255, 90, 90, 0.15);
+        }
+
+        .btn-modern-secondary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-modern-secondary:hover .btn-text {
+            letter-spacing: 0.6px;
+        }
+
+        /* UTILITY BUTTON - Mint Green Accent */
+        .btn-modern-utility {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.08) 100%);
+            border: 1.5px solid rgba(16, 185, 129, 0.3);
+            color: #10B981;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.1);
+            font-size: 0.93rem;
+        }
+
+        .btn-modern-utility::before {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), transparent);
+        }
+
+        .btn-modern-utility:hover {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.15) 100%);
+            border-color: rgba(16, 185, 129, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.15);
+        }
+
+        .btn-modern-utility:hover::before {
+            opacity: 1;
+        }
+
+        .btn-modern-utility:hover .btn-icon {
+            transform: translateX(2px);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(180deg, #F8FAFC 0%, #F5F7FB 100%);
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            margin-top: 60px;
+            animation: fadeIn 0.8s ease-out 0.6s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+        }
+
+        .footer-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .footer-text-brand {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .footer-text-copy {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .footer-right {
+            display: flex;
+            justify-content: flex-end;
+            gap: 32px;
+        }
+
+        .footer-link {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        .footer-disclaimer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            padding: 24px 20px;
+            margin-top: 36px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(248, 250, 252, 0.3) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            animation: fadeInUp 0.7s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        .footer-disclaimer-icon {
+            font-size: 1rem;
+            margin-bottom: 6px;
+            display: inline-block;
+            opacity: 0.7;
+        }
+
+        .footer-disclaimer-text {
+            font-size: 0.88rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .footer-disclaimer-text strong {
+            color: var(--text-light);
+            font-weight: 600;
+            opacity: 0.85;
+        }
+
+        /* OLD FOOTER DISCLAIMER - KEEP FOR COMPATIBILITY */
+
+        /* ===== REGIONAL AREA COMPARISON - 2025 MODERN DESIGN ===== */
+        
+        /* 3. SECTION HEADER - Premium Title Block */
+        .area-comparison-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, #FF5A5A 0%, #FF5A5A 30%, rgba(255, 90, 90, 0.2) 100%) 1;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .area-comparison-icon {
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .area-comparison-title {
+            flex: 1;
+        }
+
+        .area-comparison-title h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 0 0 6px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .area-comparison-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .area-comparison-divider {
+            display: none;
+        }
+
+        /* 7. BACKGROUND TEXTURE - Light Texture Behind Section */
+        .area-comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            position: relative;
+        }
+
+        .area-comparison-grid::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: -20%;
+            width: 120%;
+            height: 120%;
+            background-image: 
+                radial-gradient(circle at 5% 45%, rgba(255, 90, 90, 0.04) 0%, transparent 35%),
+                radial-gradient(circle at 95% 55%, rgba(16, 185, 129, 0.04) 0%, transparent 35%);
+            pointer-events: none;
+            z-index: -1;
+            border-radius: 32px;
+        }
+
+        /* 2. CARD ELEVATION & SHADOWS - Different Heights for Risk Levels */
+        .area-comparison-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardSlideUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .area-comparison-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .area-comparison-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes cardSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .high-risk-card {
+            box-shadow: 0 16px 48px rgba(255, 90, 90, 0.14);
+        }
+
+        .high-risk-card:hover {
+            box-shadow: 0 20px 56px rgba(255, 90, 90, 0.18);
+            transform: translateY(-8px);
+        }
+
+        .low-risk-card {
+            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.1);
+        }
+
+        .low-risk-card:hover {
+            box-shadow: 0 16px 48px rgba(16, 185, 129, 0.14);
+            transform: translateY(-6px);
+        }
+
+        /* 5. IMPROVED ICONOGRAPHY - Animated Icons */
+        .area-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+            padding-bottom: 18px;
+            border-bottom: 2px solid rgba(229, 231, 235, 0.4);
+        }
+
+        .area-card-icon {
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.08); }
+        }
+
+        .area-card-header h4 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .area-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+        }
+
+        /* 8. MICRO-ANIMATIONS ON HOVER */
+        .area-item {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .area-item:last-child {
+            border-bottom: none;
+        }
+
+        .area-item:hover {
+            background: rgba(233, 77, 58, 0.03);
+            padding: 16px 12px;
+            border-radius: 8px;
+            margin: 0 -12px;
+        }
+
+        .low-risk-card .area-item:hover {
+            background: rgba(16, 185, 129, 0.03);
+        }
+
+        .area-item-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .area-name-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .area-rank {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.95rem;
+            min-width: 140px;
+        }
+
+        /* 6. TREND INDICATORS - Animated Arrows */
+        .area-trend {
+            font-size: 0.9rem;
+            animation: slideIn 0.5s ease-out;
+            min-width: 20px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .area-percentage {
+            font-weight: 800;
+            font-size: 1.05rem;
+            min-width: 70px;
+            text-align: right;
+        }
+
+        .risk-high {
+            color: #FF5A5A;
+        }
+
+        .risk-low {
+            color: #10B981;
+        }
+
+        /* 1. VISUAL RANKING BARS - Gradient Fill with Animation */
+        .area-bar-container {
+            height: 6px;
+            background: rgba(229, 231, 235, 0.6);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 8px 0 6px 0;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .area-bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .area-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .high-risk-bar {
+            background: linear-gradient(90deg, #FF5A5A 0%, #FF7A7A 100%);
+            box-shadow: 0 2px 8px rgba(255, 90, 90, 0.3);
+        }
+
+        .low-risk-bar {
+            background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+        }
+
+        /* 4. CATEGORY BADGES - Soft Pill-Style Labels */
+        .area-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid;
+        }
+
+        .area-badge.hotspot {
+            background: rgba(255, 90, 90, 0.12);
+            color: #FF5A5A;
+            border-color: rgba(255, 90, 90, 0.25);
+        }
+
+        .area-badge.moderate {
+            background: rgba(245, 158, 11, 0.12);
+            color: #F59E0B;
+            border-color: rgba(245, 158, 11, 0.25);
+        }
+
+        .area-badge.safe {
+            background: rgba(16, 185, 129, 0.12);
+            color: #10B981;
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+
+        .area-badge.low {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22C55E;
+            border-color: rgba(34, 197, 94, 0.25);
+        }
+
+        .area-item:hover .area-badge {
+            transform: scale(1.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .area-card-footer {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            padding-top: 16px;
+            border-top: 1px solid rgba(229, 231, 235, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .gauge-container {
+                flex: 0 0 auto;
+            }
+
+            .info-card {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .footer-right {
+                justify-content: flex-start;
+            }
+
+            .area-comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .area-comparison-header {
+                flex-direction: column;
+            }
+
+            .action-buttons-modern {
+                flex-direction: column;
+            }
+
+            .btn-modern {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body::before {
+                display: none;
+            }
+
+            .container {
+                padding: 24px 16px;
+            }
+
+            header {
+                margin-bottom: 24px;
+            }
+
+            .header-links {
+                display: none;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header-icon {
+                font-size: 2.5rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-bottom: 40px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .info-card {
+                grid-template-columns: 1fr;
+            }
+
+            .score-card {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .gauge-container {
+                width: 160px;
+                height: 160px;
+            }
+
+            .gauge-bg, .gauge-fill {
+                width: 140px;
+                height: 140px;
+            }
+
+            .gauge-inner {
+                width: 120px;
+                height: 120px;
+            }
+
+            .percentage-text {
+                font-size: 2.2rem;
+            }
+
+            .risk-factors-table {
+                font-size: 0.85rem;
+            }
+
+            .risk-factors-table th,
+            .risk-factors-table td {
+                padding: 10px 8px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .footer-right {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP HEADER -->
+    <header>
+        <div class="header-bar">
+            <div class="header-left">
+                <div class="header-logo">🦟</div>
+                <div class="header-text">
+                    <h1>Dengue Health AI</h1>
+                    <p>Risk Assessment Results</p>
+                </div>
+            </div>
+            <div class="header-links">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="#" onclick="window.print()"><i class="fas fa-info-circle"></i> About</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-icon">🧬</div>
+            <h1>Dengue Risk Assessment</h1>
+            <p class="header-subtitle">Your personalized AI-powered health analysis</p>
+        </div>
+
+        <!-- ERROR DISPLAY -->
+        {% if error %}
+        <div class="card" style="background: #FEE2E2; border-color: #FECACA; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 12px; color: #DC2626;">
+                <i class="fas fa-exclamation-circle" style="font-size: 1.3rem;"></i>
+                <span style="font-weight: 600;">{{ error }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- MAIN RESULTS GRID -->
+        <div class="results-grid">
+            <!-- SCORE VISUALIZATION CARD -->
+            <div style="grid-column: 1 / -1;">
+                <div class="section-title">
+                    🎯 Risk Assessment Result
+                </div>
+            </div>
+
+            <div class="card score-card card-1" style="--percentage: {{ probability_pct|default(50) }}%; grid-column: 1 / -1;">
+                <div class="gauge-container">
+                    <div class="gauge">
+                        <div class="gauge-bg"></div>
+                        <div class="gauge-fill"></div>
+                        <div class="gauge-inner">
+                            <div class="percentage-text">{{ probability_pct|default('N/A')|round(1) }}<span style="font-size: 1.5rem;">%</span></div>
+                            <div class="risk-label">{{ risk_level|default('N/A') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="score-info">
+                    <div class="score-header">
+                        <div class="score-header-icon">
+                            {% if probability_pct >= 70 %}
+                            🚨
+                            {% elif probability_pct >= 40 %}
+                            ⚠️
+                            {% else %}
+                            ✅
+                            {% endif %}
+                        </div>
+                        <div class="score-header-text">
+                            <h2>
+                                {% if probability_pct >= 70 %}
+                                High Risk
+                                {% elif probability_pct >= 40 %}
+                                Moderate Risk
+                                {% else %}
+                                Low Risk
+                                {% endif %}
+                            </h2>
+                            <p>Based on your profile</p>
+                        </div>
+                    </div>
+
+                    <div class="score-details">
+                        <div class="score-detail-item">
+                            <span class="score-detail-label">Dengue Probability:</span>
+                            <span class="score-detail-value">{{ class_1_prob|default('N/A')|round(1) }}%</span>
+                        </div>
+                        <div class="score-detail-item">
+                            <span class="score-detail-label">Non-Dengue Probability:</span>
+                            <span class="score-detail-value">{{ class_0_prob|default('N/A')|round(1) }}%</span>
+                        </div>
+                        <div class="score-detail-item">
+                            <span class="score-detail-label">Assessment Type:</span>
+                            <span class="score-detail-value">AI-Powered</span>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-box">
+                        <div class="recommendation-title">📋 Recommended Actions:</div>
+                        <ul class="recommendation-list">
+                            {% if probability_pct >= 70 %}
+                            <li>Seek medical evaluation immediately</li>
+                            <li>Watch for warning signs (fever, rash, bleeding)</li>
+                            <li>Get laboratory tests (NS1, IgG, IgM)</li>
+                            <li>Stay hydrated and rest</li>
+                            {% elif probability_pct >= 40 %}
+                            <li>Monitor symptoms closely</li>
+                            <li>Take preventive measures against mosquitoes</li>
+                            <li>Consult healthcare provider if symptoms appear</li>
+                            <li>Stay updated on local dengue cases</li>
+                            {% else %}
+                            <li>Maintain preventive measures</li>
+                            <li>Use mosquito repellents daily</li>
+                            <li>Keep surroundings clean and dry</li>
+                            <li>Continue regular health check-ups</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PERSONAL INFO & GEOGRAPHIC SECTION -->
+            <div style="grid-column: 1 / -1; margin-top: 20px;">
+                <div class="section-title">
+                    📋 Your Profile & Location
+                </div>
+            </div>
+
+            <!-- PERSONAL INFO CARD -->
+            <div class="card card-2">
+                <div class="card-title">👤 Your Information</div>
+                <div class="info-card">
+                    <div class="info-item">
+                        <div class="info-label">Age</div>
+                        <div class="info-value">
+                            <span class="info-icon">🎂</span>
+                            <span>{{ age|default('N/A') }} years</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Gender</div>
+                        <div class="info-value">
+                            <span class="info-icon">👤</span>
+                            <span>{{ gender|default('N/A') }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Area Type</div>
+                        <div class="info-value">
+                            <span class="info-icon">🏘️</span>
+                            <span>{{ area_type|default('N/A') }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">House Type</div>
+                        <div class="info-value">
+                            <span class="info-icon">🏠</span>
+                            <span>{{ house_type|default('N/A') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GEOGRAPHIC RISK CARD -->
+            <div class="card geographic-card card-3">
+                <div class="geographic-header">
+                    <div class="geographic-header-icon">📍</div>
+                    <div>
+                        <div class="card-title">Geographic Risk</div>
+                    </div>
+                </div>
+                <div class="geographic-content">
+                    <div class="geographic-item">
+                        <strong>Area:</strong> {{ area|default('N/A') }}
+                    </div>
+                    {% if area_context %}
+                    <div class="geographic-item">
+                        <strong>Status:</strong>
+                        {% if area_context.is_hotspot %}
+                        🚨 Dengue hotspot - Higher transmission risk
+                        {% else %}
+                        📊 Moderate dengue activity
+                        {% endif %}
+                    </div>
+                    <div class="geographic-item">
+                        <strong>Context:</strong> {{ area_context.area_message|default('Regional dengue patterns apply') }}
+                    </div>
+                    {% endif %}
+                    <div class="geographic-item" style="background: rgba(255, 90, 90, 0.1); border-left: 3px solid #FF5A5A; color: #DC2626;">
+                        <strong>⚠️ Precaution:</strong> Extra mosquito protection recommended for this area.
+                    </div>
+                </div>
+            </div>
+
+            <!-- REGIONAL AREA COMPARISON - ENHANCED 2025 DESIGN -->
+            <div style="grid-column: 1 / -1; margin-top: 40px;">
+                <div class="area-comparison-header">
+                    <div class="area-comparison-icon">📍</div>
+                    <div class="area-comparison-title">
+                        <h3>Regional Area Comparison</h3>
+                        <p class="area-comparison-subtitle">Live comparison of dengue activity across Dhaka</p>
+                    </div>
+                    <div class="area-comparison-divider"></div>
+                </div>
+
+                <div class="area-comparison-grid">
+                    <!-- HIGHEST RISK CARD -->
+                    <div class="area-comparison-card high-risk-card">
+                        <div class="area-card-header">
+                            <span class="area-card-icon">🔴</span>
+                            <h4>Highest Risk Areas</h4>
+                        </div>
+                        <ul class="area-list">
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">1. Jatrabari</span>
+                                        <span class="area-trend">⬆</span>
+                                    </div>
+                                    <span class="area-percentage risk-high">80.0%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill high-risk-bar" style="width: 80%;"></div>
+                                </div>
+                                <span class="area-badge hotspot">🚨 Hotspot</span>
+                            </li>
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">2. Tejgaon</span>
+                                        <span class="area-trend">→</span>
+                                    </div>
+                                    <span class="area-percentage risk-high">75.8%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill high-risk-bar" style="width: 75.8%;"></div>
+                                </div>
+                                <span class="area-badge hotspot">🚨 Hotspot</span>
+                            </li>
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">3. Mohammadpur</span>
+                                        <span class="area-trend">→</span>
+                                    </div>
+                                    <span class="area-percentage risk-high">70.0%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill high-risk-bar" style="width: 70%;"></div>
+                                </div>
+                                <span class="area-badge moderate">🟠 Moderate-High</span>
+                            </li>
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">4. Bangshal</span>
+                                        <span class="area-trend">⬇</span>
+                                    </div>
+                                    <span class="area-percentage risk-high">69.4%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill high-risk-bar" style="width: 69.4%;"></div>
+                                </div>
+                                <span class="area-badge moderate">🟠 Moderate-High</span>
+                            </li>
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">5. Demra</span>
+                                        <span class="area-trend">→</span>
+                                    </div>
+                                    <span class="area-percentage risk-high">67.5%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill high-risk-bar" style="width: 67.5%;"></div>
+                                </div>
+                                <span class="area-badge moderate">🟠 Moderate-High</span>
+                            </li>
+                        </ul>
+                        <div class="area-card-footer">
+                            <span>🚨</span>
+                            <span>These areas show highest dengue activity in the city.</span>
+                        </div>
+                    </div>
+
+                    <!-- LOWEST RISK CARD -->
+                    <div class="area-comparison-card low-risk-card">
+                        <div class="area-card-header">
+                            <span class="area-card-icon">🟢</span>
+                            <h4>Lowest Risk Areas</h4>
+                        </div>
+                        <ul class="area-list">
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">1. Sutrapur</span>
+                                        <span class="area-trend">⬇</span>
+                                    </div>
+                                    <span class="area-percentage risk-low">33.3%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill low-risk-bar" style="width: 33.3%;"></div>
+                                </div>
+                                <span class="area-badge safe">🟢 Safe Zone</span>
+                            </li>
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">2. Ramna</span>
+                                        <span class="area-trend">→</span>
+                                    </div>
+                                    <span class="area-percentage risk-low">35.5%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill low-risk-bar" style="width: 35.5%;"></div>
+                                </div>
+                                <span class="area-badge low">✓ Low Activity</span>
+                            </li>
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">3. Banasree</span>
+                                        <span class="area-trend">→</span>
+                                    </div>
+                                    <span class="area-percentage risk-low">35.5%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill low-risk-bar" style="width: 35.5%;"></div>
+                                </div>
+                                <span class="area-badge low">✓ Low Activity</span>
+                            </li>
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">4. Kamrangirchar</span>
+                                        <span class="area-trend">⬇</span>
+                                    </div>
+                                    <span class="area-percentage risk-low">39.3%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill low-risk-bar" style="width: 39.3%;"></div>
+                                </div>
+                                <span class="area-badge low">✓ Low Activity</span>
+                            </li>
+                            <li class="area-item">
+                                <div class="area-item-top">
+                                    <div class="area-name-section">
+                                        <span class="area-rank">5. Biman Bandar</span>
+                                        <span class="area-trend">→</span>
+                                    </div>
+                                    <span class="area-percentage risk-low">40.6%</span>
+                                </div>
+                                <div class="area-bar-container">
+                                    <div class="area-bar-fill low-risk-bar" style="width: 40.6%;"></div>
+                                </div>
+                                <span class="area-badge low">✓ Low Activity</span>
+                            </li>
+                        </ul>
+                        <div class="area-card-footer">
+                            <span>✓</span>
+                            <span>These areas show lower dengue activity. Stay vigilant.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- ACTION BUTTONS - 2025 MODERN DESIGN -->
+        <div style="grid-column: 1 / -1;">
+            <div class="action-buttons-modern">
+                <!-- Primary Action: Recalculate Risk -->
+                <a href="/" class="btn-modern btn-modern-primary btn-modern-1">
+                    <span class="btn-icon"><i class="fas fa-sync-alt"></i></span>
+                    <span class="btn-text">Recalculate Risk</span>
+                </a>
+
+                <!-- Secondary Action: Prevention Guide -->
+                <a href="/?#tips" class="btn-modern btn-modern-secondary btn-modern-2">
+                    <span class="btn-icon"><i class="fas fa-shield-alt"></i></span>
+                    <span class="btn-text">Prevention Guide</span>
+                </a>
+            </div>
+
+            <!-- FOOTER DISCLAIMER -->
+            <div class="footer-disclaimer">
+                <div class="footer-disclaimer-icon">🛡️</div>
+                <div class="footer-disclaimer-text">
+                    This assessment is for <strong>educational purposes only</strong>. It is <strong>NOT a medical diagnosis</strong> and should not replace professional medical evaluation, laboratory testing, or consultation with healthcare providers.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                <div class="footer-logo">🦟</div>
+                <div class="footer-text">
+                    <div class="footer-text-brand">Dengue Health AI</div>
+                    <div class="footer-text-copy">© 2025 All rights reserved</div>
+                </div>
+            </div>
+            <div class="footer-right">
+                <a href="#" class="footer-link"><i class="fas fa-lock"></i> Privacy Policy</a>
+                <a href="#" class="footer-link"><i class="fas fa-file-contract"></i> Terms of Use</a>
+                <a href="#" class="footer-link"><i class="fas fa-question-circle"></i> About This Tool</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animate progress bars on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBars = document.querySelectorAll('.progress-bar-fill');
+            progressBars.forEach((bar, index) => {
+                setTimeout(() => {
+                    const width = bar.style.width;
+                    bar.style.width = '0';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

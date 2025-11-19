@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DengueCheck - AI Dengue Risk Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #e94d3a;
+            --primary-light: #f5a39f;
+            --primary-dark: #c41e0b;
+            --secondary: #ff9900;
+            --accent: #ffd700;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #fafafa;
+            --bg-light: #f5f5f7;
+            --border: #e5e7eb;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: var(--white);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, #e94d3a 0%, #ff9900 35%, #ffd700 70%, rgba(255,215,0,0.3) 100%);
+            color: var(--white);
+            padding: 120px 20px 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(40px) scale(1.05); }
+        }
+
+        .hero-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: var(--white);
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-4px);
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 400px;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-visual svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1));
+        }
+
+        /* ===== TRUST SECTION ===== */
+        .trust-section {
+            background: var(--white);
+            padding: 40px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .trust-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .trust-item {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .trust-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .trust-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .trust-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* ===== TIPS SECTION ===== */
+        .tips-section {
+            padding: 100px 20px;
+            background: var(--bg);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tips-category {
+            margin-bottom: 60px;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .tip-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardFade 0.6s ease-out forwards;
+            opacity: 0;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-out;
+        }
+
+        .tip-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        @keyframes cardFade {
+            from { opacity: 0; transform: translateY(20px) rotateX(10deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0); }
+        }
+
+        .tip-card:nth-child(1) { animation-delay: 0.05s; }
+        .tip-card:nth-child(2) { animation-delay: 0.1s; }
+        .tip-card:nth-child(3) { animation-delay: 0.15s; }
+        .tip-card:nth-child(4) { animation-delay: 0.2s; }
+        .tip-card:nth-child(5) { animation-delay: 0.25s; }
+        .tip-card:nth-child(6) { animation-delay: 0.3s; }
+
+        .tip-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(233, 77, 58, 0.12);
+        }
+
+        .tip-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            transition: transform 0.4s ease-out;
+        }
+
+        .tip-card:hover .tip-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .tip-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .tip-desc {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* ===== FORM SECTION ===== */
+        .form-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, rgba(233, 77, 58, 0.05) 0%, rgba(255, 153, 0, 0.05) 100%);
+            position: relative;
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .progress-indicator {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .form-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: formSlide 0.7s ease-out;
+        }
+
+        @keyframes formSlide {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-alert {
+            background: linear-gradient(135deg, #fef08a 0%, #fcd34d 100%);
+            border-left: 4px solid var(--warning);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            color: #78350f;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            animation: formInput 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes formInput {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+        .form-group:nth-child(5) { animation-delay: 0.3s; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-label {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .required {
+            color: var(--danger);
+        }
+
+        .form-input-group {
+            position: relative;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Manrope', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-light);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(233, 77, 58, 0.1);
+            outline: none;
+        }
+
+        .form-helper {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 6px;
+            display: block;
+        }
+
+        .form-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, #d84315 100%);
+            color: var(--white);
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 8px 20px rgba(233, 77, 58, 0.3);
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(233, 77, 58, 0.4);
+        }
+
+        .form-submit:active {
+            transform: translateY(0);
+        }
+
+        /* ===== MOBILE STICKY CTA ===== */
+        .mobile-cta {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary);
+            color: var(--white);
+            padding: 16px;
+            text-align: center;
+            font-weight: 700;
+            z-index: 1000;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: #e5e7eb;
+            padding: 60px 20px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--white);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col a {
+            color: #e5e7eb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary);
+        }
+
+        .footer-divider {
+            border-top: 1px solid #374151;
+            margin: 40px 0;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-cta {
+                display: block;
+            }
+
+            .form-section {
+                padding: 60px 20px 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand">
+                <span style="font-size: 1.6em; margin-right: 8px;">🦟</span>
+                <span style="display: inline-block;">
+                    <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; line-height: 1.2;">Dengue Health AI</div>
+                    <div style="font-size: 0.65rem; font-weight: 600; color: var(--primary-light); letter-spacing: 0.3px;">Risk Assessment Results</div>
+                </span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#tips">Prevention</a></li>
+                <li><a href="#form">Assessment</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-shield-virus"></i> AI Health Tool
+                </div>
+                <h1 class="hero-title">Check Your Dengue Risk</h1>
+                <p class="hero-subtitle">
+                    Get an instant, personalized dengue risk assessment powered by AI and epidemiological data from Dhaka. Take control of your health today.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">
+                        <i class="fas fa-check-circle"></i> Start Assessment
+                    </button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('tips').scrollIntoView({behavior:'smooth'})">
+                        <i class="fas fa-book"></i> Learn Prevention
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="200" r="150" fill="#e94d3a" opacity="0.1"/>
+                    <path d="M 200 100 Q 250 150 200 200 Q 150 150 200 100" fill="#e94d3a" opacity="0.3"/>
+                    <circle cx="200" cy="200" r="100" fill="none" stroke="#e94d3a" stroke-width="2" opacity="0.5"/>
+                    <text x="200" y="210" text-anchor="middle" font-size="60" fill="#e94d3a" opacity="0.6">🛡️</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST SECTION -->
+    <section class="trust-section">
+        <div class="trust-container">
+            <div class="trust-item">
+                <div class="trust-icon">📊</div>
+                <div class="trust-title">Epidemiological Data</div>
+                <div class="trust-desc">Based on real Dhaka dengue datasets</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">✅</div>
+                <div class="trust-title">Expert Verified</div>
+                <div class="trust-desc">Reviewed by health professionals</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">🔒</div>
+                <div class="trust-title">Privacy First</div>
+                <div class="trust-desc">Your data stays completely private</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">⚡</div>
+                <div class="trust-title">Instant Results</div>
+                <div class="trust-desc">Get results in seconds</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIPS SECTION -->
+    <section class="tips-section" id="tips">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Prevention & Recovery Guide</h2>
+                <p class="section-subtitle">
+                    Expert-backed tips to reduce your dengue risk and support recovery
+                </p>
+            </div>
+
+            <!-- Prevention Tips -->
+            <div class="tips-category">
+                <h3 class="category-title">🦟 Avoid Mosquitoes</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">🧴</div>
+                        <div class="tip-title">Use Repellents</div>
+                        <div class="tip-desc">Apply DEET or picaridin repellents on exposed skin during early morning and late afternoon.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">👕</div>
+                        <div class="tip-title">Protective Clothing</div>
+                        <div class="tip-desc">Wear light-colored, long-sleeved shirts and pants to minimize exposed skin.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🛏️</div>
+                        <div class="tip-title">Mosquito Nets</div>
+                        <div class="tip-desc">Sleep under mosquito nets, especially in high-risk areas without air conditioning.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🪟</div>
+                        <div class="tip-title">Home Security</div>
+                        <div class="tip-desc">Install screens on windows and doors, and repair any holes to keep mosquitoes out.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">💧</div>
+                        <div class="tip-title">Remove Water Sources</div>
+                        <div class="tip-desc">Regularly empty containers and buckets where mosquitoes breed.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🌿</div>
+                        <div class="tip-title">Clean Surroundings</div>
+                        <div class="tip-desc">Join community clean-ups and report mosquito breeding sites to authorities.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recovery Tips -->
+            <div class="tips-category">
+                <h3 class="category-title">💚 Recovery & Care</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">💧</div>
+                        <div class="tip-title">Stay Hydrated</div>
+                        <div class="tip-desc">Drink plenty of water, oral rehydration solutions, and fresh juices to restore fluids.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🥗</div>
+                        <div class="tip-title">Nutritious Diet</div>
+                        <div class="tip-desc">Eat vitamin-rich foods, fruits, and proteins to rebuild blood cells and platelets.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🚶</div>
+                        <div class="tip-title">Gradual Activity</div>
+                        <div class="tip-desc">Start with light walks and gentle stretching. Avoid strenuous exercise for weeks.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">😴</div>
+                        <div class="tip-title">Rest & Sleep</div>
+                        <div class="tip-desc">Get plenty of sleep and emotional support from family and friends.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🏥</div>
+                        <div class="tip-title">Monitor Symptoms</div>
+                        <div class="tip-desc">Track temperature and symptoms. Seek medical help for warning signs.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🚫</div>
+                        <div class="tip-title">Avoid NSAIDs</div>
+                        <div class="tip-desc">Don't take aspirin or NSAIDs unless directed by your doctor.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section class="form-section" id="form">
+        <div class="form-container">
+            <div class="form-header">
+                <h2 class="form-title">Risk Assessment</h2>
+                <p style="font-size: 1.05rem; color: var(--text-light); margin-bottom: 15px;">
+                    Answer a few questions to get your personalized dengue risk score
+                </p>
+                <div class="progress-indicator">
+                    <i class="fas fa-tasks"></i> All Fields Required
+                </div>
+            </div>
+
+            {% if error %}
+            <div style="background: #fee2e2; color: #dc2626; padding: 14px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid #dc2626; font-weight: 600;">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="form-card">
+                <div class="form-alert">
+                    <i class="fas fa-lightbulb"></i> <strong>Geographic Location Matters:</strong> Your area is the #1 risk factor. Areas like Jatrabari, Tejgaon & Bangshal are dengue hotspots.
+                </div>
+
+                <form method="post" id="dengueForm" novalidate>
+                    <!-- Row 1: Age & Gender -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-birthday-cake" style="color: var(--primary);"></i>
+                                Age <span class="required">*</span>
+                            </label>
+                            <input type="number" class="form-control" id="age" name="age" placeholder="25" min="1" max="120" required>
+                            <small class="form-helper">Your age in years</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-user" style="color: var(--primary);"></i>
+                                Gender <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Area Type -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-map-pin" style="color: var(--primary);"></i>
+                            Area Type <span class="required">*</span>
+                        </label>
+                        <select class="form-select" id="area_type" name="area_type" required>
+                            <option value="">Select area type</option>
+                            <option value="Developed">Developed (Urban)</option>
+                            <option value="Undeveloped">Undeveloped (Rural/Semi-urban)</option>
+                        </select>
+                        <small class="form-helper">Is your area developed or undeveloped?</small>
+                    </div>
+
+                    <!-- House Type -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-home" style="color: var(--primary);"></i>
+                            House Type <span class="required">*</span>
+                        </label>
+                        <select class="form-select" id="house_type" name="house_type" required>
+                            <option value="">Select house type</option>
+                            <option value="Building">Building (Concrete/Brick)</option>
+                            <option value="Tin-Shed">Tin-Shed</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Area (KEY) -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-compass" style="color: var(--primary);"></i>
+                            Area Name <span class="required">*</span>
+                            <span style="background: var(--primary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">KEY</span>
+                        </label>
+                        <input type="text" class="form-control" id="area" name="area" placeholder="e.g., Jatrabari" list="area-list" autocomplete="off" required>
+                        <datalist id="area-list">
+                            <option value="Mirpur">
+                            <option value="Chawkbazar">
+                            <option value="Paltan">
+                            <option value="Motijheel">
+                            <option value="Gendaria">
+                            <option value="Dhanmondi">
+                            <option value="New Market">
+                            <option value="Kafrul">
+                            <option value="Pallabi">
+                            <option value="Mohammadpur">
+                            <option value="Jatrabari">
+                            <option value="Adabor">
+                            <option value="Bangshal">
+                            <option value="Sabujbagh">
+                            <option value="Hazaribagh">
+                            <option value="Tejgaon">
+                            <option value="Gulshan">
+                            <option value="Rampura">
+                            <option value="Khilgaon">
+                        </datalist>
+                        <small class="form-helper">📍 Type to see high-risk areas: Jatrabari, Tejgaon, Mohammadpur</small>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="form-submit">
+                        <i class="fas fa-check-circle"></i> Get My Risk Score
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- MOBILE STICKY CTA -->
+    <div class="mobile-cta" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-arrow-up"></i> Check My Dengue Risk
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>🏥 DengueCheck</h3>
+                    <p style="color: #9ca3af; line-height: 1.6; margin-bottom: 12px;">
+                        AI-powered dengue risk assessment tool for Dhaka residents. Get personalized insights and prevention guidance.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h3>Prevention</h3>
+                    <ul>
+                        <li><a href="#tips">Prevention Tips</a></li>
+                        <li><a href="#tips">Recovery Guide</a></li>
+                        <li><a href="#">Health Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>About</h3>
+                    <ul>
+                        <li><a href="#">Data Sources</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p>⚠️ <strong>Disclaimer:</strong> This tool is for informational purposes only. Always consult healthcare professionals for medical diagnosis and treatment.</p>
+                <p style="margin-top: 12px;">© 2025 DengueCheck. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form validation
+        const form = document.getElementById('dengueForm');
+        form.addEventListener('submit', function(e) {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'cardFade 0.6s ease-out forwards';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.tip-card').forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>
