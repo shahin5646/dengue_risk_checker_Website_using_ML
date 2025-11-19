@@ -1,4 +1,4 @@
-# Core ML Libraries (Python 3.12 Compatible)
+# Core ML Libraries
 pandas==2.3.3
 numpy==2.1.3
 scikit-learn==1.6.1
@@ -9,16 +9,16 @@ scipy==1.15.3
 # Flask Web Framework
 Flask==3.1.2
 Flask-CORS==3.0.10
-Werkzeug==3.0.1
+Werkzeug==3.1.3
 
 # Production Server (optional)
-gunicorn==22.0.0
+gunicorn==21.2.0
 
-# Environment Variables
-python-dotenv==1.0.1
+# Env config
+python-dotenv==1.0.0
 
-# Visualization (optional)
-matplotlib==3.9.2
-seaborn==0.13.2
-shap==0.46.0
-folium==0.17.0
+# Visualization (optional for dev)
+matplotlib==3.8.2
+seaborn==0.13.0
+shap==0.43.0
+folium==0.14.0
