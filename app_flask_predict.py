@@ -504,10 +504,11 @@ if __name__ == '__main__':
     print(" Goal 2: Explain top risk factors influencing dengue in Dhaka")
     print("\n" + "=" * 70 + "\n")
     
+    
     # Run Flask app
     app.run(
-        debug=True,           # Enable debug mode for development
-        host='127.0.0.1',     # Listen on localhost
-        port=5000,            # Port 5000
-        use_reloader=True     # Auto-reload on code changes
+        debug=False,          # Disable debug for production
+        host='0.0.0.0',       # Listen on all interfaces
+        port=5000,            # Port 5000 (Render will reassign via $PORT env)
+        use_reloader=False    # No reloader in production
     )
